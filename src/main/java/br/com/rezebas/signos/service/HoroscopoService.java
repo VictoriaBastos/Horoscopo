@@ -1,16 +1,15 @@
 package br.com.rezebas.signos.service;
 
-import br.com.rezebas.signos.dto.HoroscopoRequest;
-import br.com.rezebas.signos.dto.HoroscopoResponse;
+import br.com.rezebas.signos.dto.*;
 
 public interface HoroscopoService {
 
-    HoroscopoResponse getSignoSolar(HoroscopoRequest request);
+    SignoSolarResponse getSignoSolar(MapaAstralRequest request);
 
-    HoroscopoResponse getSignoAscendente(HoroscopoRequest request);
+    SignoAscendenteResponse getSignoAscendente(MapaAstralRequest request);
 
 
-    HoroscopoResponse getSignoLunar(HoroscopoRequest request);
+    SignoLunarResponse getSignoLunar(MapaAstralRequest request);
 
-    HoroscopoResponse getMapaAstral(HoroscopoRequest request);
+    MapaAstralResponse getMapaAstral(MapaAstralRequest request);
 }

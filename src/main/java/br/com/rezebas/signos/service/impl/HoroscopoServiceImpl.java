@@ -1,7 +1,6 @@
 package br.com.rezebas.signos.service.impl;
 
-import br.com.rezebas.signos.dto.HoroscopoRequest;
-import br.com.rezebas.signos.dto.HoroscopoResponse;
+import br.com.rezebas.signos.dto.*;
 import br.com.rezebas.signos.enums.*;
 import br.com.rezebas.signos.factory.SignoInfoFactory;
 import br.com.rezebas.signos.model.Signo;
@@ -15,21 +14,22 @@ import java.util.Set;
 @Service
 public class HoroscopoServiceImpl implements HoroscopoService {
 
-    private final SignoInfoFactory signoFactory;
+    private final SignoInfoFactory factory;
 
-    public HoroscopoServiceImpl(SignoInfoFactory signoFactory) {
-        this.signoFactory = signoFactory;
+    public HoroscopoServiceImpl(SignoInfoFactory factory) {
+        this.factory = factory;
     }
 
     @Override
-    public HoroscopoResponse getMapaAstral(HoroscopoRequest request) {
+    public MapaAstralResponse getMapaAstral(MapaAstralRequest request) {
 
         LocalDateTime dataNascimento = LocalDateTime.of(request.getAnoNascimento(), request.getMesNascimento(),
                 request.getDiaNascimento(),request.getHoraNascimento(),request.getMinutosNascimento());
+
         LocalTime horaNascimento = LocalTime.of(request.getHoraNascimento(), request.getMinutosNascimento());
         String signoSolar = findSignoSolar(MonthDay.of(request.getMesNascimento(), request.getDiaNascimento()));
 
-        return HoroscopoResponse.builder()
+        return MapaAstralResponse.builder()
                 .nome(request.getNome())
                 .idade(getIdade(dataNascimento))
                 .dataNascimento(getDataFormatada(dataNascimento))
@@ -43,25 +43,27 @@ public class HoroscopoServiceImpl implements HoroscopoService {
     }
 
     @Override
-    public HoroscopoResponse getSignoSolar(HoroscopoRequest request) {
+    public SignoSolarResponse getSignoSolar(MapaAstralRequest request) {
         MonthDay diaMesNascimento = MonthDay.of(request.getMesNascimento(), request.getDiaNascimento());
         String signo = findSignoSolar(diaMesNascimento);
 
-        return HoroscopoResponse.builder().nome(request.getNome()).signoSolar(signo).build();
+        return SignoSolarResponse.builder().nome(request.getNome()).signoSolar(signo).build();
     }
 
     @Override
-    public HoroscopoResponse getSignoAscendente(HoroscopoRequest request) {
+    public SignoAscendenteResponse getSignoAscendente(MapaAstralRequest request) {
         MonthDay diaMesNascimento = MonthDay.of(request.getMesNascimento(), request.getDiaNascimento());
         String signo = findSignoSolar(diaMesNascimento);
         String ascendente = findSignoAscendente(signo,LocalTime.of(request.getHoraNascimento(), request.getMinutosNascimento()));
 
-        return HoroscopoResponse.builder().nome(request.getNome()).signoAscendente(ascendente).build();
+        return SignoAscendenteResponse.builder().nome(request.getNome()).signoAscendente(ascendente).build();
     }
 
     @Override
-    public HoroscopoResponse getSignoLunar(HoroscopoRequest request) {
-        return null;
+    public SignoLunarResponse getSignoLunar(MapaAstralRequest request) {
+        LocalTime horaNascimento = LocalTime.of(request.getHoraNascimento(), request.getMinutosNascimento());
+        String signoLunar = findSignoLunar(request.getLocalNascimento(),horaNascimento);
+        return SignoLunarResponse.builder().nome(request.getNome()).signoLunar(signoLunar).build();
     }
 
     private String findSignoSolar(MonthDay diaMesNascimento) {
@@ -74,8 +76,9 @@ public class HoroscopoServiceImpl implements HoroscopoService {
     }
 
     private String findSignoAscendente(String signoSolar, LocalTime horaNascimento){
-        Signo signoInfo = signoFactory.getSignoInfo(signoSolar);
-        return signoInfo.findAscendente(signoSolar, horaNascimento);
+
+        Signo signoInformation = factory.getSignoInfo(signoSolar);
+        return signoInformation.findAscendente(signoSolar,horaNascimento);
     }
 
     private String findSignoLunar(String localNascimento, LocalTime horaNascimento){
