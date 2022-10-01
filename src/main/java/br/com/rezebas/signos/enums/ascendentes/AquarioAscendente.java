@@ -1,4 +1,4 @@
-package br.com.rezebas.signos.enums;
+package br.com.rezebas.signos.enums.ascendentes;
 
 
 import lombok.Getter;
