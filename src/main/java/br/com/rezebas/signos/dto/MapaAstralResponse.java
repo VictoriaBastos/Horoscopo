@@ -1,14 +1,12 @@
 package br.com.rezebas.signos.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-public class HoroscopoResponse {
+public class MapaAstralResponse {
     private String nome;
     private Integer idade;
     @JsonProperty("data_nascimento")
