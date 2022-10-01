@@ -23,11 +23,10 @@ public class HoroscopoServiceImpl implements HoroscopoService {
     @Override
     public MapaAstralResponse getMapaAstral(MapaAstralRequest request) {
 
-        LocalDateTime dataNascimento = LocalDateTime.of(request.getAnoNascimento(), request.getMesNascimento(),
-                request.getDiaNascimento(),request.getHoraNascimento(),request.getMinutosNascimento());
+        LocalDateTime dataNascimento = request.getDataHoraNascimento();
 
-        LocalTime horaNascimento = LocalTime.of(request.getHoraNascimento(), request.getMinutosNascimento());
-        String signoSolar = findSignoSolar(MonthDay.of(request.getMesNascimento(), request.getDiaNascimento()));
+        LocalTime horaNascimento = request.getDataHoraNascimento().toLocalTime();
+        String signoSolar = findSignoSolar(MonthDay.from(dataNascimento));
 
         return MapaAstralResponse.builder()
                 .nome(request.getNome())
@@ -44,7 +43,7 @@ public class HoroscopoServiceImpl implements HoroscopoService {
 
     @Override
     public SignoSolarResponse getSignoSolar(MapaAstralRequest request) {
-        MonthDay diaMesNascimento = MonthDay.of(request.getMesNascimento(), request.getDiaNascimento());
+        MonthDay diaMesNascimento = MonthDay.from(request.getDataHoraNascimento());
         String signo = findSignoSolar(diaMesNascimento);
 
         return SignoSolarResponse.builder().nome(request.getNome()).signoSolar(signo).build();
@@ -52,16 +51,16 @@ public class HoroscopoServiceImpl implements HoroscopoService {
 
     @Override
     public SignoAscendenteResponse getSignoAscendente(MapaAstralRequest request) {
-        MonthDay diaMesNascimento = MonthDay.of(request.getMesNascimento(), request.getDiaNascimento());
+        MonthDay diaMesNascimento = MonthDay.from(request.getDataHoraNascimento());
         String signo = findSignoSolar(diaMesNascimento);
-        String ascendente = findSignoAscendente(signo,LocalTime.of(request.getHoraNascimento(), request.getMinutosNascimento()));
+        String ascendente = findSignoAscendente(signo,request.getDataHoraNascimento().toLocalTime());
 
         return SignoAscendenteResponse.builder().nome(request.getNome()).signoAscendente(ascendente).build();
     }
 
     @Override
     public SignoLunarResponse getSignoLunar(MapaAstralRequest request) {
-        LocalTime horaNascimento = LocalTime.of(request.getHoraNascimento(), request.getMinutosNascimento());
+        LocalTime horaNascimento = request.getDataHoraNascimento().toLocalTime();
         String signoLunar = findSignoLunar(request.getLocalNascimento(),horaNascimento);
         return SignoLunarResponse.builder().nome(request.getNome()).signoLunar(signoLunar).build();
     }
