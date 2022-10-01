@@ -1,7 +1,7 @@
 package br.com.rezebas.signos.model;
 
-import br.com.rezebas.signos.enums.AquarioAscendente;
-import br.com.rezebas.signos.enums.AriesAscendente;
+import br.com.rezebas.signos.enums.ascendentes.AquarioAscendente;
+import br.com.rezebas.signos.enums.ascendentes.AriesAscendente;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
