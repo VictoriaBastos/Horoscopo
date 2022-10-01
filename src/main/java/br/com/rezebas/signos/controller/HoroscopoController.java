@@ -1,7 +1,6 @@
 package br.com.rezebas.signos.controller;
 
-import br.com.rezebas.signos.dto.HoroscopoRequest;
-import br.com.rezebas.signos.dto.HoroscopoResponse;
+import br.com.rezebas.signos.dto.*;
 import br.com.rezebas.signos.service.HoroscopoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,24 +20,23 @@ public class HoroscopoController {
         this.service = service;
     }
 
-
     @GetMapping("/mapaAstral")
-    public ResponseEntity<HoroscopoResponse> getMapaAstral(@Valid @RequestBody HoroscopoRequest request){
+    public ResponseEntity<MapaAstralResponse> getMapaAstral(@Valid @RequestBody MapaAstralRequest request){
         return ResponseEntity.ok(service.getMapaAstral(request));
     }
 
     @GetMapping("/signoSolar")
-    public ResponseEntity<HoroscopoResponse> getSignoSolar(@Valid @RequestBody HoroscopoRequest request){
+    public ResponseEntity<SignoSolarResponse> getSignoSolar(@Valid @RequestBody MapaAstralRequest request){
         return ResponseEntity.ok(service.getSignoSolar(request));
     }
 
     @GetMapping("/signoAscendente")
-    public ResponseEntity<HoroscopoResponse> getSignoAscendente(@RequestBody HoroscopoRequest request){
+    public ResponseEntity<SignoAscendenteResponse> getSignoAscendente(@RequestBody MapaAstralRequest request){
         return ResponseEntity.ok(service.getSignoAscendente(request));
     }
 
     @GetMapping("/signoLunar")
-    public ResponseEntity<HoroscopoResponse> getSignoLunar(@RequestBody HoroscopoRequest request){
+    public ResponseEntity<SignoLunarResponse> getSignoLunar(@RequestBody MapaAstralRequest request){
         return ResponseEntity.ok(service.getSignoLunar(request));
     }
 }
